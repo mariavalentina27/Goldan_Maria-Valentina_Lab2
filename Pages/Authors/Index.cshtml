@@ -1,8 +1,8 @@
 ﻿@page
-@model Goldan_Maria_Valentina_lab2.Pages.Publishers.IndexModel
+@model Goldan_Maria_Valentina_lab2.Pages.Authors.IndexModel
 
 @{
-    ViewData["Title"] = "Publishers";
+    ViewData["Title"] = "Authors";
 }
 
 <h1>Index</h1>
@@ -14,16 +14,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Publisher[0].PublisherName)
+                @Html.DisplayNameFor(model => model.Authors[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Authors[0].LastName)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Publisher) {
+@foreach (var item in Model.Authors) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.PublisherName)
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |

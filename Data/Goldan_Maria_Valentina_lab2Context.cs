@@ -17,5 +17,11 @@ namespace Goldan_Maria_Valentina_lab2.Data
         public DbSet<Goldan_Maria_Valentina_lab2.Models.Book> Book { get; set; } = default!;
 
         public DbSet<Goldan_Maria_Valentina_lab2.Models.Publisher> Publisher { get; set; }
+
+        public DbSet<Goldan_Maria_Valentina_lab2.Models.Author> Author { get; set; }
+
+        public DbSet<Goldan_Maria_Valentina_lab2.Models.Category> Category { get; set; }
+
+        public DbSet<Goldan_Maria_Valentina_lab2.Models.BookCategory> BookCategory { get; set; }
     }
 }
