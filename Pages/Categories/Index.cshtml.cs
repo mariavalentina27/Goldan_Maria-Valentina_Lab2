@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Goldan_Maria_Valentina_lab2.Data;
 using Goldan_Maria_Valentina_lab2.Models;
+using Goldan_Maria_Valentina_lab2.Models.ViewModels;
 
 namespace Goldan_Maria_Valentina_lab2.Pages.Categories
 {
@@ -19,14 +20,33 @@ namespace Goldan_Maria_Valentina_lab2.Pages.Categories
             _context = context;
         }
 
-        public IList<Category> Category { get;set; } = default!;
-
-        public async Task OnGetAsync()
+        public IList<Category> Category { get; set; } = default!;
+        public CategoryIndexData CategoryData { get; set; }
+        public int CategoryID { get; set; }
+        public int BookID { get; set; }
+        public async Task OnGetAsync(int? id, int? bookID)
         {
-            if (_context.Category != null)
+            CategoryData = new CategoryIndexData();
+            CategoryData.Categories = await _context.Category
+                .Include(i => i.BookCategories)
+                    .ThenInclude(c => c.Book)
+            .OrderBy(i => i.CategoryName)
+            .ToListAsync();
+
+            if (id != null)
             {
-                Category = await _context.Category.ToListAsync();
+                CategoryID = id.Value;
+                Category publisher = CategoryData.Categories
+                .Where(i => i.ID == id.Value).Single();
+                CategoryData.Books = Category.BookCategories.Books;
             }
+
+            ///public async Task OnGetAsync()
+            ///{
+            ///if (_context.Category != null)
+            ///{
+            ///Category = await _context.Category.ToListAsync();
+            ///}
         }
     }
 }
