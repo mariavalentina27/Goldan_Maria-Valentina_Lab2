@@ -63,7 +63,7 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Author.LastName)
+                @Html.DisplayFor(modelItem => item.Author.FullName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
@@ -82,7 +82,6 @@
                     }
                 }
             </td>
-
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |

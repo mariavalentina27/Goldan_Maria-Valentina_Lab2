@@ -29,16 +29,17 @@ namespace Goldan_Maria_Valentina_lab2.Pages.Categories
             CategoryData = new CategoryIndexData();
             CategoryData.Categories = await _context.Category
                 .Include(i => i.BookCategories)
-                    .ThenInclude(c => c.Book)
-            .OrderBy(i => i.CategoryName)
-            .ToListAsync();
+                    .ThenInclude(i => i.Book)
+                    .ThenInclude(i => i.Author)
+                .OrderBy(i => i.CategoryName)
+                .ToListAsync();
 
             if (id != null)
             {
                 CategoryID = id.Value;
-                Category publisher = CategoryData.Categories
+                Category category = CategoryData.Categories
                 .Where(i => i.ID == id.Value).Single();
-                CategoryData.Books = Category.BookCategories.Books;
+                CategoryData.BookCategories = category.BookCategories;
             }
 
             ///public async Task OnGetAsync()

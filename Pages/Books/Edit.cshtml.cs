@@ -21,22 +21,25 @@ namespace Goldan_Maria_Valentina_lab2.Pages.Books
         }
 
         [BindProperty]
-        public Book Book { get; set; }
+        public Book Book { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
+            if (id == null || _context.Book == null)
             {
                 return NotFound();
             }
 
             Book = await _context.Book
                 .Include(b => b.Publisher)
-                .Include(b => b.BookCategories).ThenInclude(b => b.Category)
+                .Include(b => b.Author)
+                .Include(b => b.BookCategories)
+                    .ThenInclude(b => b.Category)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
 
-            ///var book =  await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
+            var book =  await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
+            
             if (Book == null)
             {
                 return NotFound();
@@ -46,6 +49,8 @@ namespace Goldan_Maria_Valentina_lab2.Pages.Books
             PopulateAssignedCategoryData(_context, Book);
             //apelam PopulateAssignedCategoryData pentru o obtine informatiile necesare checkbox-
             //urilor folosind clasa AssignedCategoryData
+
+            Book = book;
 
             var authorList = _context.Author.Select(x => new
             {
@@ -62,32 +67,7 @@ namespace Goldan_Maria_Valentina_lab2.Pages.Books
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync(int? id, string[] selectedCategories)
-        {
-            ///if (!ModelState.IsValid)
-            ///{
-            ///return Page();
-            ///}
-
-            ///_context.Attach(Book).State = EntityState.Modified;
-
-            ///try
-            ///{
-            ///await _context.SaveChangesAsync();
-            ///}
-            ///catch (DbUpdateConcurrencyException)
-            ///{
-            ///if (!BookExists(Book.ID))
-            ///{
-            ///return NotFound();
-            ///}
-            ///else
-            ///{
-            ///throw;
-            ///}
-            ///}
-
-            ///return RedirectToPage("./Index");
-            
+        {   
             if (id == null)
             {
                 return NotFound();
@@ -95,8 +75,9 @@ namespace Goldan_Maria_Valentina_lab2.Pages.Books
 
             var bookToUpdate = await _context.Book
                 .Include(i => i.Publisher)
+                .Include(i => i.Author)
                 .Include(i => i.BookCategories)
-                .ThenInclude(i => i.Category)
+                    .ThenInclude(i => i.Category)
                 .FirstOrDefaultAsync(s => s.ID == id);
 
             if (bookToUpdate == null)
