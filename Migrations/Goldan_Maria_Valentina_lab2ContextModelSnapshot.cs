@@ -40,7 +40,7 @@ namespace Goldan_Maria_Valentina_lab2.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Author", (string)null);
                 });
 
             modelBuilder.Entity("Goldan_Maria_Valentina_lab2.Models.Book", b =>
@@ -73,7 +73,7 @@ namespace Goldan_Maria_Valentina_lab2.Migrations
 
                     b.HasIndex("PublisherID");
 
-                    b.ToTable("Book");
+                    b.ToTable("Book", (string)null);
                 });
 
             modelBuilder.Entity("Goldan_Maria_Valentina_lab2.Models.BookCategory", b =>
@@ -96,7 +96,33 @@ namespace Goldan_Maria_Valentina_lab2.Migrations
 
                     b.HasIndex("CategoryID");
 
-                    b.ToTable("BookCategory");
+                    b.ToTable("BookCategory", (string)null);
+                });
+
+            modelBuilder.Entity("Goldan_Maria_Valentina_lab2.Models.Borrowing", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<int?>("BookID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MemberID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("BookID");
+
+                    b.HasIndex("MemberID");
+
+                    b.ToTable("Borrowing", (string)null);
                 });
 
             modelBuilder.Entity("Goldan_Maria_Valentina_lab2.Models.Category", b =>
@@ -113,7 +139,36 @@ namespace Goldan_Maria_Valentina_lab2.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Category");
+                    b.ToTable("Category", (string)null);
+                });
+
+            modelBuilder.Entity("Goldan_Maria_Valentina_lab2.Models.Member", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("Adress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Member", (string)null);
                 });
 
             modelBuilder.Entity("Goldan_Maria_Valentina_lab2.Models.Publisher", b =>
@@ -130,7 +185,7 @@ namespace Goldan_Maria_Valentina_lab2.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Publisher");
+                    b.ToTable("Publisher", (string)null);
                 });
 
             modelBuilder.Entity("Goldan_Maria_Valentina_lab2.Models.Book", b =>
@@ -167,6 +222,21 @@ namespace Goldan_Maria_Valentina_lab2.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Goldan_Maria_Valentina_lab2.Models.Borrowing", b =>
+                {
+                    b.HasOne("Goldan_Maria_Valentina_lab2.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookID");
+
+                    b.HasOne("Goldan_Maria_Valentina_lab2.Models.Member", "Member")
+                        .WithMany("Borrowings")
+                        .HasForeignKey("MemberID");
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("Goldan_Maria_Valentina_lab2.Models.Author", b =>
                 {
                     b.Navigation("Books");
@@ -180,6 +250,11 @@ namespace Goldan_Maria_Valentina_lab2.Migrations
             modelBuilder.Entity("Goldan_Maria_Valentina_lab2.Models.Category", b =>
                 {
                     b.Navigation("BookCategories");
+                });
+
+            modelBuilder.Entity("Goldan_Maria_Valentina_lab2.Models.Member", b =>
+                {
+                    b.Navigation("Borrowings");
                 });
 
             modelBuilder.Entity("Goldan_Maria_Valentina_lab2.Models.Publisher", b =>

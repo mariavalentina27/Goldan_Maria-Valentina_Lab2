@@ -88,8 +88,8 @@ namespace Goldan_Maria_Valentina_lab2.Pages.Books
             if (await TryUpdateModelAsync<Book>(
                 bookToUpdate,
                 "Book",
-                i => i.Title, i => i.Author,
-                i => i.Price, i => i.PublishingDate, i => i.Publisher))
+                i => i.Title, i => i.AuthorID,
+                i => i.Price, i => i.PublishingDate, i => i.PublisherID))
                 {
                     UpdateBookCategories(_context, selectedCategories, bookToUpdate);
                     await _context.SaveChangesAsync();
