@@ -20,7 +20,7 @@ namespace Goldan_Maria_Valentina_lab2.Pages.Borrowings
         }
 
         [BindProperty]
-      public Borrowing Borrowing { get; set; }
+        public Borrowing Borrowing { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
